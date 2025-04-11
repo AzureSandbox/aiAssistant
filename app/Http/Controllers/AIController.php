@@ -33,19 +33,18 @@ class AIController extends Controller {
         }
 
         $apiKey = env('OPENAI_API_KEY'); // as mentioned in the readme file, it is better to save the api key in aws secrets manager
-        // $response = Http::withHeaders([
-        //     'Authorization' => "Bearer $apiKey",
-        //     'Content-Type' => 'application/json',
-        // ])->post('https://api.openai.com/v1/chat/completions', [
-        //     'model' => 'gpt-4',
-        //     'messages' => [['role' => 'user', 'content' => $apiPrompt]],
-        //     'temperature' => 0.7,
-        // ]);
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer $apiKey",
+            'Content-Type' => 'application/json',
+        ])->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4',
+            'messages' => [['role' => 'user', 'content' => $apiPrompt]],
+            'temperature' => 0.7,
+        ]);
 
-        $aiReply = "Testing some code";
         // logging this api call will help during debugging
 
-        // $aiReply = $response->json('choices.0.message.content', 'Error fetching response');
+        $aiReply = $response->json('choices.0.message.content', 'Error fetching response');
 
         if (!$request->tempChat) {
             try {
